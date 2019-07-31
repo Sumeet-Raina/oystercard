@@ -30,25 +30,33 @@ describe Oystercard do
   it "can touch in" do
     minimum_balance = Oystercard::MINIMUM_BALANCE
     subject.top_up(minimum_balance)
-    subject.touch_in
+    subject.touch_in(station)
     expect(subject).to be_in_journey
   end
 
   it "can touch out" do
     minimum_balance = Oystercard::MINIMUM_BALANCE
     subject.top_up(minimum_balance)
-    subject.touch_in
+    subject.touch_in(station)
     subject.touch_out
     expect(subject).not_to be_in_journey
   end
 
   it "will not touch in if below minimum balance" do
-    expect{ subject.touch_in }.to raise_error "Insufficient balance to touch in"
+    expect{ subject.touch_in(station)}.to raise_error "Insufficient balance to touch in"
   end
 
 #  it "checks if charge is made on touch out" do
 #   subject.top_up(20)
 #   expect{ subject.deduct(5) }.to change{ subject.balance }.by (-5)
 #  end
+
+let(:station){ double :station }
+it "stores the entry station " do
+  subject.top_up(10)
+  entry_station = station
+  subject.touch_in(station)
+  expect(subject.entry_station).to eq station
+end
 end
 
