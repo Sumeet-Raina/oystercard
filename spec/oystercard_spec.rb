@@ -38,7 +38,7 @@ describe Oystercard do
     minimum_balance = Oystercard::MINIMUM_BALANCE
     subject.top_up(minimum_balance)
     subject.touch_in(station)
-    subject.touch_out
+    subject.touch_out(exit_station)
     expect(subject).not_to be_in_journey
   end
 
@@ -58,5 +58,16 @@ it "stores the entry station " do
   subject.touch_in(station)
   expect(subject.entry_station).to eq station
 end
+
+let(:entry_station) {double :station }
+let(:exit_station) {double :station }
+
+it "stores exit station" do
+  subject.top_up(10)
+  subject.touch_in(entry_station)
+  subject.touch_out(exit_station)
+  expect(subject.exit_station).to eq exit_station
+end
+
 end
 
